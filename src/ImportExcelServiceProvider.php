@@ -2,6 +2,7 @@
 
 namespace Sunarc\ImportExcel;
 
+use Sunarc\ImportExcel\ImportExcel;
 use Illuminate\Support\ServiceProvider;
 
 class ImportExcelServiceProvider extends ServiceProvider
