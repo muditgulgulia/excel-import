@@ -3,6 +3,7 @@
 namespace Sunarc\ImportExcel;
 
 use Sunarc\ImportExcel\ImportExcel;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class ImportExcelServiceProvider extends ServiceProvider
@@ -15,34 +16,20 @@ class ImportExcelServiceProvider extends ServiceProvider
         /*
          * Optional methods to load your package assets
          */
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'ImportExcel');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'ImportExcel');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
+
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'ImportExcel');
+        Route::group($this->routeConfiguration(), function () {
+            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+        });
+        Route::group(['prefix' => '/api/import', 'middleware' => ['api']], function () {
+            $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
+        });
 
         if ($this->app->runningInConsole()) {
             // Publishing the config.
             $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('ImportExcel.php'),
+                __DIR__ . '/../config/config.php' => config_path('ImportExcel.php'),
             ], 'config');
-
-            // Publishing the views.
-            /*$this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/ImportExcel'),
-            ], 'views');*/
-
-            // Publishing assets.
-            /*$this->publishes([
-                __DIR__.'/../resources/assets' => public_path('vendor/ImportExcel'),
-            ], 'assets');*/
-
-            // Publishing the translation files.
-            /*$this->publishes([
-                __DIR__.'/../resources/lang' => resource_path('lang/vendor/ImportExcel'),
-            ], 'lang');*/
-
-            // Registering package commands.
-            // $this->commands([]);
         }
     }
 
@@ -51,12 +38,17 @@ class ImportExcelServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'ImportExcel');
-
-        // Register the main class to use with the facade
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'ImportExcel');
         $this->app->singleton('ImportExcel', function () {
             return new ImportExcel;
         });
+    }
+
+    protected function routeConfiguration()
+    {
+        return [
+            'prefix' => 'import',
+            'middleware' => ['web'],
+        ];
     }
 }

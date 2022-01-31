@@ -24,8 +24,8 @@ class DatabaseService
      *
      * @return string
      */
-    
-    private function database() : string
+
+    private function database(): string
     {
         return $this->connection->getDatabaseName();
     }
@@ -36,7 +36,7 @@ class DatabaseService
      * @return array
      */
 
-    public function tables() : array
+    public function tables(): array
     {
         return $this->connection->getDoctrineSchemaManager()->listTableNames();
     }
@@ -49,7 +49,7 @@ class DatabaseService
      * @return array
      */
 
-    public function tableSchema(string $table, string $database = null) : array
+    public function tableSchema(string $table, string $database = null): array
     {
         if (!$database) {
             $database = $this->database();

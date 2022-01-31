@@ -6,7 +6,7 @@
         "import-excel"
     ],
     "homepage": "https://github.com/sunarc/import-excel",
-    "license": ":license_composer",
+    "license": "MIT",
     "type": "library",
     "authors": [
         {
